@@ -14,7 +14,16 @@
 + 进程的消亡及释放资源：  wait()死等;waitpid()可以通过options来控制等待的行为;waitid(); 
 + 进程池的实现；
 + exec函数族：   execl,execlp,execle,execv,execvp 
-+ 用户权限以及组权限：   
++ 用户权限以及组权限： 粘连位， u+s ; g+s; uid:real userid :真实的用户🆔id ,effective userid 有效的用户🆔id，鉴权exec执行时候使用；save userid 
+    - getuid 获取真实🆔id
+    - geteuid 获取有效🆔id
+    - getgid 
+    - getegid 
+    - setuid 设置real user id 
+    - seteuid 设置effective user id 
+    - setgid 
+    - setreuid 交换真实🆔id和有效🆔id，原子化的
+    - setregid 
 + system函数：  
 + 进程会计：  
 + 进程时间：   

@@ -13,7 +13,7 @@
     - vfork（）：淘汰  
 + 进程的消亡及释放资源：  wait()死等;waitpid()可以通过options来控制等待的行为;waitid(); 
 + 进程池的实现；
-+ exec函数族：   
++ exec函数族：   execl,execlp,execle,execv,execvp 
 + 用户权限以及组权限：   
 + system函数：  
 + 进程会计：  

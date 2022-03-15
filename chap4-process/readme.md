@@ -19,8 +19,7 @@
     - geteuid 获取有效🆔id
     - getgid 
     - getegid 
-    - setuid 设置real user id 
-    - seteuid 设置effective user id 
+    - setuid 设置设置effective user id 
     - setgid 
     - setreuid 交换真实🆔id和有效🆔id，原子化的
     - setregid 

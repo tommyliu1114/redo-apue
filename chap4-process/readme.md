@@ -23,8 +23,11 @@
     - setgid 
     - setreuid 交换真实🆔id和有效🆔id，原子化的
     - setregid 
-+ system函数：  
-+ 进程会计：  
-+ 进程时间：   
++ system函数：  fork+exec 封装
++ 进程会计：  acct 
++ 进程时间：   times();
 + 守护进程：  
+    - 会话 session,会话标识sid , 
+    - 终端 
+    - setsid : 非leader的进程调用，必须子进程调用。常用做法：子进程执行，父进程退出，自动成为守护在后台运行
 + 系统日志：  

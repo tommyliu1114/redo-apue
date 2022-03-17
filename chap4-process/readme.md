@@ -30,4 +30,7 @@
     - 会话 session,会话标识sid , 
     - 终端 
     - setsid : 非leader的进程调用，必须子进程调用。常用做法：子进程执行，父进程退出，自动成为守护在后台运行
+    - getpgid
+    - getpgrp 
 + 系统日志：  
+    - syslogd服务,openlog(); syslog();closelog();

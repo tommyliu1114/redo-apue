@@ -28,7 +28,9 @@
         - sigpending: 
     + 扩展：
         - sigsuspend: todo 重要，信号驱动程序
-        - sigaction: 避免了signal信号处理中的信号重入
-        - setitimer
-    + 实时信号
+        - sigaction: 避免了signal信号处理中的信号重入,替换sigaction函数即可
+        - setitimer： 设置定时器；
+    + 实时信号： 标准信号放在位图中处理，可能会丢失。标准信号优先响应，实时信号后面响应；
+        - 排队处理：ulimit -a 可以查看pengding-signals查看最多排队多少个信号
+        - 不会丢失
 - 线程

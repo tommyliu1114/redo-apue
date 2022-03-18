@@ -11,8 +11,9 @@
     + 常用函数：
         - kill 
         - raise 给自己发信号，可以给进程/线程发信号（有多态的感觉） 
-        - alarm  下发SIGALARM信号
+        - alarm  下发SIGALARM信号,令牌桶实现
         - pause 等待信号,不是轮询等，是事件机制的
+        - setitimer(): getitimer 
         - abort
         - system
         - sleep

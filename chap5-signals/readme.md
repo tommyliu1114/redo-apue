@@ -16,12 +16,19 @@
         - setitimer(): getitimer 
         - abort
         - system
-        - sleep
-    + 信号集
-    + 信号屏蔽字/pending集合的处理
+        - sleep,nanosleop,usleep 
+    + 信号集: 
+        - sigemptyset 
+        - sigfillset
+        - sigaddset 
+        - sigdelset 
+        - sigismember 
+    + 信号屏蔽字/pending集合的处理:
+        - sigprocmask(); 人为的控制信号响应
+        - sigpending: 
     + 扩展：
-        - sigsuspend
-        - sigaction
+        - sigsuspend: todo 重要，信号驱动程序
+        - sigaction: 避免了signal信号处理中的信号重入
         - setitimer
     + 实时信号
 - 线程

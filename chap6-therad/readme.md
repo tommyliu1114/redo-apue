@@ -11,8 +11,17 @@
     - 线程可以被同一进程中的其他线程取消
     - 线程调用pthread_exit()函数，相当于进程阶段的exit，仅仅结束当前运行的线程
     - pthread_join   : 相当于wait原语
-+ 线程的取消选项 
-+ 线程的清理
++ 线程的取消选项 : pthread_cancel(): 取消有两种状态：允许和不允许
+    - 允许取消： 异步cancel，推迟cancel（默认)推迟至cancel点
+    - cancel点： posix定义的cancle点为引发阻塞的系统调用 
+        - pthread_setcancelstatue(): 设置是否允许取消
+        - pthread_setcanceltype(): 设置取消方式，异步还是cancel
+        - pthread_testcancel(): 本函数啥都不做，就是一个取消点  
++ 线程的分离： pthread_detach() : 
+
++ 线程的清理:
+    - pthread_cleanup_push() : 
+    - pthread_cleanup_pop() 
 + 线程同步 
 + 线程属性  
 + 线程同步的属性

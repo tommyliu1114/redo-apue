@@ -5,7 +5,7 @@
 #include <sys/wait.h>
 #define LEFT 30000000
 #define RIGHT 30000200
-#define N 3
+#define N 3 
 
 int main()
 {

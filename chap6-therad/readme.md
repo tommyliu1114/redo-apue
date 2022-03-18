@@ -22,7 +22,10 @@
 + 线程的清理:
     - pthread_cleanup_push() : 
     - pthread_cleanup_pop() 
-+ 线程同步 
++ 线程同步 : 
+    - 互斥量类型： pthread_mutex_t 
+    - 互斥量 ： pthread_mutex_init()  pthread_mutex_destroy 
+    - 互斥量使用： pthread_mutex_lock()  pthread_mutex_unlock()  pthread_mutex_trylock()  
 + 线程属性  
 + 线程同步的属性
 + 线程与信号

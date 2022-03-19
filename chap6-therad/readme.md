@@ -26,6 +26,7 @@
     - 互斥量类型： pthread_mutex_t 
     - 互斥量 ： pthread_mutex_init()  pthread_mutex_destroy 
     - 互斥量使用： pthread_mutex_lock()  pthread_mutex_unlock()  pthread_mutex_trylock()  
+    - pthread_once: 仅仅执行一次
 + 线程属性  
 + 线程同步的属性
 + 线程与信号

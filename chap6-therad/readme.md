@@ -31,10 +31,15 @@
         - pthread_cond_t ，pthread_cond_init, pthread_cond_destroy, 
         - pthread_cond_broadcast, pthread_cond_signal 
         - pthread_cond_timewait, pthread_cond_wait ,
-    - 信号量 
-        - 
+    - 信号量 : 
+        - semphore 
+    - 读写锁 ： 写者饿死问题：读硕-》共享锁。 写锁-》互斥硕
 
-+ 线程属性  
+
++ 线程属性  ： pthread_attr_t
+    - pthread_attr_init
+    - pthread_attr_destroy
+    
 + 线程同步的属性
 + 线程与信号
 + 线程与fork

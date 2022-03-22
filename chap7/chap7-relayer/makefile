@@ -1,3 +1,5 @@
+CFLAGS+=-pthread
+LDFLAGS+=-pthread 
 all: relayer
 relayer: relayer.o main.o
 	gcc $^ -o $@

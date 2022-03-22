@@ -27,7 +27,7 @@ int main(){
     write(fd1,"tty2\n",5);
     int job1 = rel_addjob(fd1,fd2);
     if (job1 < 0){
-        fprintf(stderr,"error is : %S\n",strerr(-job1));
+        fprintf(stderr,"error is : %S\n",strerror(-job1));
         exit(1);
     }
     while (1)

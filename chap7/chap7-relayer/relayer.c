@@ -39,6 +39,7 @@ static pthread_mutex_t mut_rel_job = PTHREAD_MUTEX_INITIALIZER;
 static pthread_once_t init_once = PTHREAD_ONCE_INIT;
 
 static void fsm_driver(struct rel_fsm_st *fsm){
+    ssize_t ret ;
     switch (fsm->state)
     {
     case STATE_R:
@@ -59,7 +60,8 @@ static void fsm_driver(struct rel_fsm_st *fsm){
         }
         break;
     case STATE_W:
-        int ret = write(fsm->dfd,fsm->buff+fsm->pos,fsm->len);
+        
+        ret = write(fsm->dfd,fsm->buff+fsm->pos,fsm->len);
         if (ret < 0){
             if (errno == EAGAIN){
                 fsm->state = STATE_W;
@@ -88,6 +90,14 @@ static void fsm_driver(struct rel_fsm_st *fsm){
     }
 }
 
+static int get_free_pos_unlocked(){
+    for(int i = 0;i<REL_JOBMAX;i++){
+        if(rel_job[i] == NULL){
+            return i;
+        }
+    }
+    return -1;
+}
 
 static void *thr_relayer(void *p){
     while (1)
@@ -106,13 +116,14 @@ static void *thr_relayer(void *p){
     }
     pthread_mutex_unlock(&mut_rel_job);
     }
+
     
 }
 static void module_load(void){
     pthread_t tid_relayer;
     int err = pthread_create(&tid_relayer,NULL,thr_relayer,NULL);
     if(err){
-        fprintf(stderr,"pthread_create(): %s\n",strerr(err));
+        fprintf(stderr,"pthread_create(): %s\n",strerror(err));
         exit(1);
     }
 }

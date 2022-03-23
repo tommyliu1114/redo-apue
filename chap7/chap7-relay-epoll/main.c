@@ -5,7 +5,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <errno.h>
-#include <poll.h>
+#include <sys/epoll.h>
 #define TTY1 "/dev/tty11"
 #define TTY2 "/dev/tty12"
 
@@ -108,10 +108,10 @@ static void fsm_driver(struct fsm_st *fsm)
 
 static void relay(int fd1, int fd2)
 {
-    
+
     struct fsm_st fsm12; //
     struct fsm_st fsm21; //
-    struct pollfd pfd[2];
+    int epfd;
     int fd1_save;
     fd1_save = fcntl(fd1, F_GETFL);
     fcntl(fd1, F_SETFL, fd1_save | O_NONBLOCK);
@@ -126,39 +126,51 @@ static void relay(int fd1, int fd2)
     fsm21.sfd = fd2;
     fsm21.dfd = fd1;
     //
-    pfd[0].fd = fd1;
-    pfd[0].events = 0;
-    pfd[1].fd = fd2;
-    pfd[1].events = 0;
+    epfd = epoll_create(10);
+    if (epfd < 0)
+    {
+        perror("epoll_create()");
+        exit(1);
+    }
+    struct epoll_event ev;
+    ev.events = 0;
+    ev.data.fd = fd1;
+    epoll_ctl(epfd, EPOLL_CTL_ADD, fd1, &ev);
+
+    ev.events = 0;
+    ev.data.fd = fd2;
+    epoll_ctl(epfd, EPOLL_CTL_ADD, fd2, &ev);
     while (fsm12.state != STATE_T || fsm21.state != STATE_T)
     {
         //布置监控任务
-        pfd[0].events = 0;
-        
+        ev.events = 0;
+        ev.data.fd = fd1;
 
         if (fsm12.state == STATE_R)
         {
-           pfd[0].events |= POLLIN;
+            ev.events |= EPOLLIN;
         }
-       if (fsm21.state == STATE_W)
+        if (fsm21.state == STATE_W)
         {
-            pfd[0].events |= POLLOUT;   
-        }  
+            ev.events |= EPOLLOUT;
+        }
+        epoll_ctl(epfd, EPOLL_CTL_MOD, fd1, &ev);
 
-        pfd[1].events = 0;       
+        ev.events = 0;
+        ev.data.fd = fd2;
         if (fsm12.state == STATE_W)
         {
-            pfd[1].events |= POLLOUT;
+            ev.events |= EPOLLOUT;
         }
         if (fsm21.state == STATE_R)
         {
-            pfd[1].events |= POLLIN;
+            ev.events |= EPOLLIN;
         }
- 
+        epoll_ctl(epfd, EPOLL_CTL_MOD, fd2, &ev);
         //监控
         if (fsm12.state < STATE_AUTO || fsm21.state < STATE_AUTO)
         {
-            while (poll(pfd, 2,-1) < 0)
+            while (epoll_wait(epfd,&ev,1,-1) < 0)
             {
                 if (errno == EINTR)
                 {
@@ -166,19 +178,19 @@ static void relay(int fd1, int fd2)
                 }
                 else
                 {
-                    perror("poll()");
+                    perror("epoll_wait()");
                     exit(1);
                 }
             }
         }
 
         //查看监控结果
-        if (pfd[0].revents & POLLIN || pfd[1].revents & POLLOUT  || fsm12.state > STATE_AUTO )
+        if (ev.data.fd == fd1 && ev.events && EPOLLIN|| ev.data.fd == fd2 && ev.events &&EPOLLOUT || fsm12.state > STATE_AUTO)
         {
             fsm_driver(&fsm12);
         }
 
-        if (pfd[1].revents & POLLIN || pfd[0].revents & POLLOUT || fsm21.state > STATE_AUTO)
+        if (ev.data.fd == fd1 && ev.events && EPOLLOUT || ev.data.fd == fd2 && ev.events &&  EPOLLIN  || fsm21.state > STATE_AUTO)
         {
             fsm_driver(&fsm21);
         }
@@ -186,6 +198,7 @@ static void relay(int fd1, int fd2)
 
     fcntl(fd1, F_SETFL, fd1_save);
     fcntl(fd2, F_SETFL, fd2_save);
+    close(epfd);
 }
 int main()
 {

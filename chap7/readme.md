@@ -8,9 +8,12 @@
 # iO多路转接:
 - 作用： 监视文件描述符的行为
 - select : 兼容性好，事件为单位，监控文件描述符
-- poll：兼容性好，文件描述符为单位,监控事件
+- poll：兼容性好，文件描述符为单位,监控事件,
 - epoll： linux的poll的方言，
-
+    - epoll_create: 创建一个epoll实例
+    - epoll_ctl
+    - epoll_wait
+![avatar](poll-epoll.jpeg)
 # 其他读写函数 
 # 储存映射io
 # 文件锁 

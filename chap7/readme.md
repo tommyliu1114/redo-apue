@@ -14,6 +14,9 @@
     - epoll_ctl
     - epoll_wait
 ![avatar](poll-epoll.jpeg)
-# 其他读写函数 
-# 储存映射io
+# 其他读写函数 :
+- readv 
+- writev 
+# 储存映射io:
+- mmap
 # 文件锁 
